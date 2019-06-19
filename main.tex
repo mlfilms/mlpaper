@@ -14,7 +14,7 @@
 
 
 \begin{document}
-\title{Machine Learning Experimental Realizations of the XY Model}
+\title{Generating Simulated Data for Machine Learning Training Sets: Particle and Topological Defect Identification and Tracking}
 
 \date{\today}
 \author{Adam~A.~S.~Green}
@@ -36,6 +36,17 @@
 \section{Experimental System}
 \blindtext{}
 \section{Machine Learning Pipeline}
+Previous work has been done demonstrating the viability of using machine learning to identify whether a given simulated photo contains a topological defect [citation]. However, the system was only run on simulated images and did not identify the locations of defects in the images, limiting its usefulness for experimental purposes. In order to make a system viable for usage with real experiments, we developed a pipeline that makes use of modern deep-learning object detection and image enhancement techniques. For object detection we used darkflow, which is a TensorFlow implementation of the YOLOv2 algorithm [citation]. YOLOv2 learns to perform both region-proposal and region classification using the darknet-19 architecture. Allowing the region proposal mechanism to be trained is important for our task of defect identification as object detection algorithms that rely on traditional heuristic searches, such as R-CNN [citation], would likely fail to identify the central point of a defect as an object. Training darkflow on a set of 100 simulated 200x200 images with each image containing 20 defects shows that this network is viable for detecting the locations of defects in simulation data.
+
+FIGURE
+
+Machine learning algorithms, by nature, optimize themselves to perform as well as their architecture allows on the given training data. While this can lead to highly effective systems, it is the primary reason why training on a set of simulated data often makes the final model non-viable for usage in the real world. Simulated data is highly predictable and clean while real world data can have large amounts of noise and significant variance in how certain key objects appear. By training on the simulated data, the system will over-fit on the very specific shapes, colors, and gradients produced by the simulation. Since the objects of interest in the experimental data are almost guaranteed to not be as perfect as the ones in the simulation, the machine learning model will fail to identify them. Our solution to this problem is to introduce various inaccuracies, which mimic real-world inaccuracies, into the simulated images, with the goal of making the final model more robust.
+
+The first issue that needs to be dealt with is lighting and contrast. In simulated defect images, the intensity of a pixel is able to range from perfectly black to perfectly white dependent on the director orientation, maximizing the gradients and contrast in the image. The mean intensity of the image will also generally be around 0.5 on a scale from 0 to 1, since there is no offset to the image brightness. When using an experimental image, the difference in brightness between perfectly aligned and perfectly misaligned directors is much smaller than the full dynamic range of the image, causing much smaller gradients. The average brightness of the images is rarely 0.5, so what constitutes a bright and dark pixels is often much more complex than simply looking at the intensity of the pixel. To make the simulation and experimental images as similar as possible in regards to average intensity and dynamic range, a common standardization procedure is used. Each pixel's intensity value is set according to
+
+
+
+
 \blindtext{}
 \section{Results and Discussion}
 \blindtext{}
